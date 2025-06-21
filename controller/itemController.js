@@ -1,6 +1,19 @@
 import Item from '../models/item.js'
 
 export function createItem(req,res) {
+    const newItemData = req.body
+
+    const item = new Item(newItemData)
+
+    item.save().then(() =>{
+        res.json({
+            message: "Item Created"
+        })
+    }).catch((error) =>{
+        res.json({
+            message: "Product not Created"
+        })
+    })
 
 }
 
@@ -25,4 +38,3 @@ export function isCustomer(req){
     }
     return true
 }
-caam
