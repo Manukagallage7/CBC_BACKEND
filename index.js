@@ -4,11 +4,16 @@ import mongoose from "mongoose";
 import Student from './models/student.js';
 import Product from './models/product.js';
 import User from './models/user.js';
+import Item from './models/item.js';
+import Order from './models/order.js'
 import studentRouter from './routes/studentRouter.js';
 import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRouter.js';
+import itemRouter from './routes/itemRouter.js';
+import orderRouter from './routes/orderRouter.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
+
 
 dotenv.config()
 
@@ -45,6 +50,8 @@ app.use(
 app.use("/students", studentRouter);
 app.use("/products", productRouter);
 app.use("/users", userRouter);
+app.use("/items", itemRouter);
+app.use("/orders", orderRouter);
 
 app.listen(
     5000,
