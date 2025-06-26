@@ -1,40 +1,40 @@
 import Item from '../models/item.js'
+import { isAdmin } from './userController.js';
 
-export function createItem(req,res) {
-    const newItemData = req.body
+export async function createItem(req,res) {
 
-    const item = new Item(newItemData)
-
-    item.save().then(() =>{
+    if(!isAdmin){
         res.json({
-            message: "Item Created"
+            message:  "Please Login As Administrator to add Items"
         })
-    }).catch((error) =>{
+        return
+    }
+
+    const newItemData = req.body;
+
+    try{
+        const item = new Item(newItemData);
+        await item.save();
         res.json({
-            message: "Product not Created"
+            message: "Item Has Been Created"
         })
-    })
+    } catch(error){
+        res.status(403).json({
+            message: error.message
+        })
+    }
 
 }
 
-export function isAdmin(req){
-    if(req.user == null){
-        return false
+export async function getItem(req,res){
+    
+    try{
+        const Items = await Item.find({})
+        res.json(Items)
+    } catch (error){
+        res.json({
+            message: error.message
+        })
     }
-
-    if(req.user.type !== "Admin"){
-        return false
-    }
-    return true
 }
 
-export function isCustomer(req){
-    if(req.user == null){
-        return false
-    }
-
-    if(req.user.type !== "Customer"){
-        return false
-    }
-    return true
-}
